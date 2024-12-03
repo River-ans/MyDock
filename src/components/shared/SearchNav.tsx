@@ -1,5 +1,5 @@
 'use client';
-import { useSearchEngineStore } from '@/app/stores/tabStore';
+import { useSearchEngineStore } from '@/stores/tabStore';
 import React from 'react';
 // import { FaGoogle, FaNaver, FaBaidu } from "react-icons/fa";
 
@@ -21,8 +21,8 @@ export function SearchTabsItem({
       onClick={onClick}
       className={`flex items-center px-4 py-1 cursor-pointer rounded-2xl transition-all duration-300 ${
         isActive
-          ? 'bg-primary-500 text-white'
-          : 'bg-transparent text-gray-700 hover:bg-gray-200'
+          ? 'bg-primary-800 text-white'
+          : 'bg-transparent text-primary-700 hover:bg-primary-200'
       }`}
     >
       {icon}
@@ -54,10 +54,10 @@ export function SearchTabs() {
 
       {/* Baidu Tab */}
       <SearchTabsItem
-        label='Baidu'
+        label='Bing'
         // icon={<FaBaidu />}
-        isActive={activeSearchEngine === 'baidu'}
-        onClick={() => setActiveSearchEngine('baidu')}
+        isActive={activeSearchEngine === 'bing'}
+        onClick={() => setActiveSearchEngine('bing')}
       />
     </div>
   );
