@@ -67,7 +67,7 @@ export function SearchTabs() {
   ];
 
   return (
-    <div className='flex rounded-full relative' ref={containerRef}>
+    <div className='flex items-center rounded-full relative' ref={containerRef}>
       {tabs.map((tab) => (
         <div
           key={tab.engine}
@@ -88,7 +88,7 @@ export function SearchTabs() {
         style={{
           width: `${highlightStyle.width}px`,
           height: `${highlightStyle.height}px`,
-          transform: `translate(${highlightStyle.left}px, ${highlightStyle.top}px)`,
+          transform: `translateX(${highlightStyle.left}px)`, // 수평 이동
         }}
       ></div>
     </div>

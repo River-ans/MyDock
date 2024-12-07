@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { SearchTabs } from './SearchNav';
-import { useSearchEngineStore } from '@/stores/tabStore';
 
 interface SearchFormProps {
   onSubmit: (query: string) => void;
@@ -11,7 +10,6 @@ interface SearchFormProps {
 
 export const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { activeSearchEngine } = useSearchEngineStore(); // 선택된 검색 엔진
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
