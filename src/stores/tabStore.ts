@@ -1,12 +1,14 @@
+// @/stores/tabStore.ts
 import { create } from 'zustand';
 
-// Zustand 스토어
-interface SearchEngineStore {
-  activeSearchEngine: string; // 현재 선택된 검색 엔진
-  setActiveSearchEngine: (engine: string) => void;
+export type SearchEngine = 'google' | 'naver' | 'bing';
+
+interface TabStoreState {
+  activeSearchEngine: SearchEngine;
+  setActiveSearchEngine: (engine: SearchEngine) => void;
 }
 
-export const useSearchEngineStore = create<SearchEngineStore>((set) => ({
-  activeSearchEngine: 'google', // 기본 검색 엔진은 Google
+export const useSearchEngineStore = create<TabStoreState>((set) => ({
+  activeSearchEngine: 'google',
   setActiveSearchEngine: (engine) => set({ activeSearchEngine: engine }),
 }));
