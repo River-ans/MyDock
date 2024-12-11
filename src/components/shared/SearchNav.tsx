@@ -1,4 +1,3 @@
-// @/components/SearchNav.tsx
 'use client';
 
 import React, { useRef, useState, useLayoutEffect, useCallback } from 'react';

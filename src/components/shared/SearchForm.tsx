@@ -1,13 +1,8 @@
-// @/components/SearchForm.tsx
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { SearchTabs } from './SearchNav';
 import { useSearchEngineStore } from '@/stores/tabStore';
-
-// CSS전략:
-// 초기: opacity:0, pointer-events:none 으로 비표시
-// showSearchForm:true -> opacity:1, pointer-events:auto 로 전환 (transition)
 
 export const SearchForm: React.FC = () => {
   const [showSearchForm, setShowSearchForm] = useState(false);
@@ -39,7 +34,7 @@ export const SearchForm: React.FC = () => {
     const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
     const isToggleKey = isMac
       ? e.metaKey && e.key === 'k'
-      : e.ctrlKey && e.key === 'k';
+      : e.altKey && e.key === 'k';
 
     if (isToggleKey) {
       e.preventDefault();
