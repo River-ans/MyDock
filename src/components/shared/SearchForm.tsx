@@ -34,7 +34,7 @@ export const SearchForm: React.FC = () => {
     const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
     const isToggleKey = isMac
       ? e.metaKey && e.key === 'k'
-      : e.altKey && e.key === 'k';
+      : e.altKey && e.shiftKey && e.key === 'k';
 
     if (isToggleKey) {
       e.preventDefault();
