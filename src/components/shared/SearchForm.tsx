@@ -63,13 +63,23 @@ export const SearchForm: React.FC = () => {
 
   return (
     <div
-      onTransitionEnd={handleTransitionEnd}
-      className={`
+      className={`h-full w-full bg-black/10 backdrop-blur-sm absolute flex items-center justify-center
+    transition-all duration-500 ease-in-out transform
+        ${
+          showSearchForm
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }
+    `}
+    >
+      <div
+        onTransitionEnd={handleTransitionEnd}
+        className={`
     top-[100px]
     left-[50px]
     z-[999]
     transition-all
-    duration-300
+    duration-500
     ease-in-out
     transform
     ${
@@ -78,24 +88,25 @@ export const SearchForm: React.FC = () => {
         : 'opacity-0 scale-0 pointer-events-none'
     }
   `}
-    >
-      <form
-        onSubmit={handleSearch}
-        className='flex flex-col gap-2 bg-gray-100 p-2 rounded-3xl border border-gray-300'
       >
-        <SearchTabs recalculateHighlightRef={recalculateHighlightRef} />
-        <div className='flex items-center relative'>
-          <div className='absolute left-2 top-1/2 transform -translate-y-1/2 text-primary-600'>
-            🔍
+        <form
+          onSubmit={handleSearch}
+          className='flex flex-col gap-2 bg-gray-100 p-2 rounded-3xl border border-gray-300'
+        >
+          <SearchTabs recalculateHighlightRef={recalculateHighlightRef} />
+          <div className='flex items-center relative'>
+            <div className='absolute left-2 top-1/2 transform -translate-y-1/2 text-primary-600'>
+              🔍
+            </div>
+            <input
+              type='text'
+              ref={inputRef}
+              className='bg-transparent focus:outline-none focus:ring-0 px-2 py-1 pl-8'
+              placeholder='Search something...'
+            />
           </div>
-          <input
-            type='text'
-            ref={inputRef}
-            className='bg-transparent focus:outline-none focus:ring-0 px-2 py-1 pl-8'
-            placeholder='Search something...'
-          />
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
