@@ -17,8 +17,8 @@ export function SearchTabsItem({
   return (
     <div
       onClick={onClick}
-      className={`relative flex items-center font-bold px-4 py-1 cursor-pointer rounded-2xl transition-all duration-300 z-10 ${
-        isActive ? 'text-primary-100 ' : 'text-primary-300'
+      className={`relative flex items-center font-bold px-4 py-1 cursor-pointer rounded-2xl transition-all duration-300 z-10 select-none ${
+        isActive ? 'text-primary-100 ' : 'text-primary-400'
       }`}
     >
       <span>{label}</span>
