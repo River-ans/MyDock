@@ -53,45 +53,45 @@ export const SearchForm: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // transition이 끝난 뒤 하이라이트 위치 재계산 호출
   const handleTransitionEnd = useCallback(() => {
     if (showSearchForm && recalculateHighlightRef.current) {
-      // 폼이 완전히 표시된 뒤 하이라이트 재계산
       recalculateHighlightRef.current();
     }
   }, [showSearchForm]);
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setShowSearchForm(false);
+    }
+  };
+
   return (
     <div
-      className={`h-full w-full bg-black/10 backdrop-blur-sm absolute flex items-center justify-center
-    transition-all duration-500 ease-in-out transform z-20
+      onClick={handleBackdropClick}
+      className={`h-full w-full bg-black/10 backdrop-blur-md absolute flex items-center justify-center
+        transition-all duration-500 ease-in-out transform z-20
         ${
           showSearchForm
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
         }
-    `}
+      `}
     >
       <div
         onTransitionEnd={handleTransitionEnd}
-        className={`
-    top-[100px]
-    left-[50px]
-    z-[999]
-    transition-all
-    duration-500
-    ease-in-out
-    transform
-    ${
-      showSearchForm
-        ? 'opacity-100 scale-100 pointer-events-auto'
-        : 'opacity-0 scale-0 pointer-events-none'
-    }
-  `}
+        className={`top-[100px] left-[50px]
+          z-[999] transition-all duration-500 ease-in-out transform
+          ${
+            showSearchForm
+              ? 'scale-100 pointer-events-auto'
+              : ' scale-75 pointer-events-none'
+          }
+        `}
       >
         <form
           onSubmit={handleSearch}
-          className='flex flex-col gap-2 bg-gray-100 p-2 rounded-3xl border border-gray-300'
+          className='flex flex-col gap-2 bg-primary-500/80 p-2 rounded-3xl border 
+            border-gray-300 border border-primary-100/50 shadow-xl'
         >
           <SearchTabs recalculateHighlightRef={recalculateHighlightRef} />
           <div className='flex items-center relative'>
@@ -101,7 +101,7 @@ export const SearchForm: React.FC = () => {
             <input
               type='text'
               ref={inputRef}
-              className='bg-transparent focus:outline-none focus:ring-0 px-2 py-1 pl-8'
+              className='bg-transparent text-primary-200 focus:outline-none focus:ring-0 px-2 py-1 pl-8 placeholder:text-primary-200  placeholder:opacity-50'
               placeholder='Search something...'
             />
           </div>

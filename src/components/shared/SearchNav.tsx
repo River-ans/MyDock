@@ -17,8 +17,8 @@ export function SearchTabsItem({
   return (
     <div
       onClick={onClick}
-      className={`relative flex items-center px-4 py-1 cursor-pointer rounded-2xl transition-all duration-300 z-10 ${
-        isActive ? 'text-white' : 'text-primary-800'
+      className={`relative flex items-center font-bold px-4 py-1 cursor-pointer rounded-2xl transition-all duration-300 z-10 ${
+        isActive ? 'text-primary-100 ' : 'text-primary-300'
       }`}
     >
       <span>{label}</span>
@@ -106,7 +106,7 @@ export function SearchTabs({ recalculateHighlightRef }: SearchTabsProps) {
         </div>
       ))}
       <div
-        className='bg-primary-800 rounded-2xl absolute transition-all duration-500 z-0'
+        className='bg-primary-800/40 rounded-2xl absolute transition-all duration-500 z-0'
         style={{
           width: `${highlightStyle.width}px`,
           height: `${highlightStyle.height}px`,
