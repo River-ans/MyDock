@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { SearchTabs } from './SearchNav';
 import { useSearchEngineStore } from '@/stores/tabStore';
+import { useSearchFormStore } from '@/stores/searchFormStore'; // 전역 상태 가져오기
 
 export const SearchForm: React.FC = () => {
-  const [showSearchForm, setShowSearchForm] = useState(false);
+  const { showSearchForm, setShowSearchForm, toggleSearchForm } =
+    useSearchFormStore(); // 전역 상태 가져오기
   const { activeSearchEngine } = useSearchEngineStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const recalculateHighlightRef = useRef<(() => void) | null>(null);
@@ -38,20 +40,17 @@ export const SearchForm: React.FC = () => {
 
     if (isToggleKey) {
       e.preventDefault();
-      setShowSearchForm((prev) => {
-        const next = !prev;
-        if (next) {
-          setTimeout(() => inputRef.current?.focus(), 0);
-        }
-        return next;
-      });
+      toggleSearchForm(); // 전역 상태를 토글
+      if (!showSearchForm) {
+        setTimeout(() => inputRef.current?.focus(), 0);
+      }
     }
   };
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [showSearchForm, toggleSearchForm]);
 
   const handleTransitionEnd = useCallback(() => {
     if (showSearchForm && recalculateHighlightRef.current) {
@@ -61,7 +60,7 @@ export const SearchForm: React.FC = () => {
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      setShowSearchForm(false);
+      setShowSearchForm(false); // 전역 상태에서 닫기
     }
   };
 
