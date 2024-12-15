@@ -64,7 +64,7 @@ export const SearchForm: React.FC = () => {
   return (
     <div
       className={`h-full w-full bg-black/10 backdrop-blur-sm absolute flex items-center justify-center
-    transition-all duration-500 ease-in-out transform
+    transition-all duration-500 ease-in-out transform z-20
         ${
           showSearchForm
             ? 'opacity-100 pointer-events-auto'

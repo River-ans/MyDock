@@ -13,10 +13,10 @@ export function Favorites() {
   };
 
   return (
-    <div className='w-full flex  items-center justify-center gap-2'>
+    <div className='w-fit flex  items-center justify-center gap-2 bg-primary-900/10 backdrop-blur-sm  w-fit p-3  rounded-3xl border-[0.5px] border-primary-100 outline outline-primary-300'>
       <button
         onClick={handleAddClick}
-        className='flex justify-center items-center w-10 h-10 bg-primary-500/20 text-primary-400 rounded-xl transition duration-300 hover:bg-primary-400/10'
+        className='flex justify-center items-center w-10 h-10 bg-primary-500/20 text-primary-400 rounded-xl transition duration-300 hover:bg-primary-400/10 hover:scale-110'
       >
         <PlusIcon width={24} height={24} />
       </button>

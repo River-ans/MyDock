@@ -19,7 +19,7 @@ export function FavoritesList() {
       {favorites.map((favorite, index) => (
         <div
           key={index}
-          className='flex justify-center items-center w-10 h-10 bg-primary-500/20 text-primary-400 rounded-xl transition duration-300 hover:bg-primary-400/10'
+          className='flex justify-center items-center w-10 h-10 bg-primary-500/20 text-primary-400 rounded-xl transition duration-300 hover:bg-primary-400/20 hover:scale-125	overflow-hidden p-1'
         >
           <a
             href={`https://${favorite.url}`}
@@ -30,7 +30,7 @@ export function FavoritesList() {
             <img
               src={`https://www.google.com/s2/favicons?sz=64&domain_url=${favorite.url}`}
               alt={`${favorite.name} 파비콘`}
-              className='w-6 h-6'
+              className='rounded-lg'
             />
           </a>
         </div>

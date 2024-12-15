@@ -71,7 +71,7 @@ export function FavoritesForm() {
             placeholder='사이트 이름'
             value={favoriteData.name}
             onChange={handleInputChange}
-            className='bg-primary-400/10 border px-4 py-2 rounded-md'
+            className='bg-primary-400/10 border px-4 py-2 rounded-lg placeholder:text-sm'
             required
           />
           <input
@@ -80,20 +80,20 @@ export function FavoritesForm() {
             placeholder='사이트 링크 (www.로 시작)'
             value={favoriteData.url}
             onChange={handleInputChange}
-            className='bg-primary-400/10 border px-4 py-2 rounded-md'
+            className='bg-primary-400/10 border px-4 py-2 rounded-lg placeholder:text-sm'
             required
           />
           <div className='ml-auto flex gap-2'>
             <button
               type='submit'
-              className='bg-primary-900 text-white text-sm px-4 py-2 rounded-lg'
+              className='bg-primary-900 text-white text-sm px-4 py-2 rounded-lg duration-300 hover:opacity-80'
             >
               추가
             </button>
             <button
               type='button'
               onClick={() => setShowForm(false)}
-              className='bg-primary-200 text-primary-800 text-sm px-4 py-2 rounded-lg'
+              className='bg-primary-200 text-primary-800 text-sm px-4 py-2 rounded-lg duration-300 hover:opacity-80'
             >
               닫기
             </button>
