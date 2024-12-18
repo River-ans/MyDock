@@ -1,5 +1,5 @@
-import { Backdrop } from '../BackDrop';
 import SearchIcon from '@/assets/icons/search.svg';
+import { Backdrop } from '../BackDrop';
 export function SearchBox() {
   return (
     <Backdrop isVisible={true}>
