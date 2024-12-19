@@ -34,7 +34,7 @@ export const SearchEngineSelector: React.FC<SearchEngineSelectorProps> = ({
 
       {/* 드롭다운 */}
       {isOpen && (
-        <div className='absolute top-10 left-0 bg-primary-900/70 rounded-lg shadow-lg z-50 overflow-hidden'>
+        <div className='absolute top-10 left-0 bg-primary-700/90 rounded-lg shadow-lg shadow-primary-800/40 z-50 overflow-hidden'>
           {searchEngines.map((engine) => (
             <button
               key={engine.name}
