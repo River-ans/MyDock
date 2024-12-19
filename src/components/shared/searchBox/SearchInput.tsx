@@ -1,25 +1,29 @@
 'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import SearchIcon from '@/assets/icons/search.svg';
-import { useSearchBoxStore } from '@/stores/useSearchBoxStore';
+import {
+  useSearchBoxStore,
+  useSearchEngineStore,
+} from '@/stores/useSearchBoxStore';
+import { SearchEngineSelector } from './SearchEngineSelector';
 
 export function SearchInput() {
   const [query, setQuery] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null); // input 참조
-  const { isSearchBoxVisible } = useSearchBoxStore(); // 전역 상태 구독
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { isSearchBoxVisible } = useSearchBoxStore();
+  const { selectedEngine } = useSearchEngineStore();
 
   useEffect(() => {
     if (isSearchBoxVisible && inputRef.current) {
       inputRef.current.focus(); // 검색 박스가 표시될 때 자동 포커스
     }
-  }, [isSearchBoxVisible]); // 상태 변경 시마다 실행
+  }, [isSearchBoxVisible]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 기본 동작 막기
+    e.preventDefault();
     if (query.trim()) {
-      // 구글 검색을 새 창에서 열기
       window.open(
-        `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+        `${selectedEngine.url}${encodeURIComponent(query)}`,
         '_blank'
       );
     }
@@ -27,24 +31,19 @@ export function SearchInput() {
 
   return (
     <form
-      onSubmit={handleSubmit} // form의 onSubmit 처리
-      className='w-96 h-12 flex items-center bg-primary-800/70 p-1 rounded-xl
+      onSubmit={handleSubmit}
+      className='w-96 h-12 flex items-center bg-primary-800/70 rounded-xl
       border border-primary-200/50 shadow-xl shadow-primary-800/40
-      fixed top-[15%]
-      '
+      fixed top-[15%]'
     >
-      <div className='px-2'>
-        <SearchIcon width={18} height={18} className='text-primary-200/80' />
-      </div>
+      <SearchEngineSelector inputRef={inputRef} />
       <input
         ref={inputRef}
         type='text'
         placeholder='search'
         value={query}
-        onChange={(e) => setQuery(e.target.value)} // 입력 값 업데이트
-        className='bg-transparent text-primary-100 font-bold
-          placeholder:text-primary-200/80 placeholder:text-lg
-          placeholder:font-bold focus:outline-none'
+        onChange={(e) => setQuery(e.target.value)}
+        className='bg-transparent text-primary-100 font-bold placeholder:text-primary-200/80 placeholder:text-lg placeholder:font-bold focus:outline-none flex-1'
       />
     </form>
   );
