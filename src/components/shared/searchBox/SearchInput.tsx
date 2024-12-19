@@ -12,6 +12,7 @@ export function SearchInput() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { isSearchBoxVisible } = useSearchBoxStore();
   const { selectedEngine } = useSearchEngineStore();
+  // 검색 방지 플래그
 
   useEffect(() => {
     if (isSearchBoxVisible && inputRef.current) {
@@ -21,6 +22,7 @@ export function SearchInput() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (query.trim()) {
       window.open(
         `${selectedEngine.url}${encodeURIComponent(query)}`,
@@ -32,11 +34,19 @@ export function SearchInput() {
   return (
     <form
       onSubmit={handleSubmit}
-      className='w-96 h-12 flex items-center bg-primary-800/70 rounded-xl
+      className={`w-96 h-12 flex items-center bg-primary-800/70 rounded-xl
       border border-primary-200/50 shadow-xl shadow-primary-800/40
-      fixed top-[15%]'
+      fixed top-[15%] transition-all duration-500 ease-in-out
+      ${
+        isSearchBoxVisible
+          ? 'scale-100 pointer-events-auto'
+          : 'scale-75 pointer-events-none'
+      }`}
     >
-      <SearchEngineSelector inputRef={inputRef} />
+      <SearchEngineSelector
+        inputRef={inputRef}
+        isSearchBoxVisible={isSearchBoxVisible}
+      />
       <input
         ref={inputRef}
         type='text'
