@@ -15,8 +15,11 @@ export function SearchInput() {
   // 검색 방지 플래그
 
   useEffect(() => {
+    console.log('isSearchBoxVisible:', isSearchBoxVisible); // 상태 변화 확인
     if (isSearchBoxVisible && inputRef.current) {
-      inputRef.current.focus(); // 검색 박스가 표시될 때 자동 포커스
+      inputRef.current.focus(); // 검색 박스 표시 시 포커스
+    } else if (!isSearchBoxVisible && inputRef.current) {
+      inputRef.current.blur();
     }
   }, [isSearchBoxVisible]);
 
@@ -53,7 +56,7 @@ export function SearchInput() {
         placeholder='search'
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className='bg-transparent text-primary-100 font-bold placeholder:text-primary-200/80 placeholder:text-lg placeholder:font-bold focus:outline-none flex-1'
+        className='bg-transparent text-primary-100 font-bold placeholder:text-primary-200/70 placeholder:text-lg placeholder:font-bold focus:outline-none flex-1'
       />
     </form>
   );
