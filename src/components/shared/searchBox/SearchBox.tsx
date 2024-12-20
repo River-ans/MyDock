@@ -22,8 +22,14 @@ export function SearchBox() {
     };
   }, [toggleSearchBoxVisibility]);
 
+  const handleClose = () => {
+    if (isSearchBoxVisible) {
+      toggleSearchBoxVisibility(); // 검색 박스 닫기
+    }
+  };
+
   return (
-    <Backdrop isVisible={isSearchBoxVisible}>
+    <Backdrop isVisible={isSearchBoxVisible} onClose={handleClose}>
       <SearchInput />
     </Backdrop>
   );
