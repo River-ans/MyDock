@@ -44,7 +44,7 @@ export function DockBar() {
 
       setFavorites(updatedFavorites);
       saveFavoritesToLocalStorage(updatedFavorites);
-    } catch (e) {
+    } catch {
       alert('올바른 URL을 입력해주세요.');
     }
   };

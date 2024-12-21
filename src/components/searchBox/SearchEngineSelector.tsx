@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchEngineStore } from '@/stores/useSearchBoxStore';
 
 interface SearchEngineSelectorProps {
@@ -15,23 +15,36 @@ export const SearchEngineSelector: React.FC<SearchEngineSelectorProps> = ({
   const { searchEngines, selectedEngine, setSelectedEngine } =
     useSearchEngineStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1); // 현재 선택된 인덱스
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
-  // 드롭다운 열릴 때 선택된 엔진의 인덱스 설정
+  const handleSelect = useCallback(
+    (engine: typeof selectedEngine) => {
+      setSelectedEngine(engine);
+      setIsOpen(false);
+      setHighlightedIndex(-1);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    [setSelectedEngine, inputRef]
+  );
+
   useEffect(() => {
     if (isOpen) {
       const selectedIndex = searchEngines.findIndex(
         (engine) => engine.name === selectedEngine.name
       );
       setHighlightedIndex(selectedIndex !== -1 ? selectedIndex : 0);
+    } else {
+      setHighlightedIndex(-1);
     }
   }, [isOpen, searchEngines, selectedEngine]);
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (isSearchBoxVisible && e.key === 'Tab') {
-        e.preventDefault(); // 기본 Tab 동작 방지
-        setIsOpen((prev) => !prev); // Tab 키로 드롭다운 토글
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
       } else if (isOpen) {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -53,7 +66,7 @@ export const SearchEngineSelector: React.FC<SearchEngineSelectorProps> = ({
           setIsOpen(false);
           setHighlightedIndex(-1);
           if (inputRef.current) {
-            inputRef.current.focus(); // 입력 필드로 포커스 이동
+            inputRef.current.focus();
           }
         }
       }
@@ -64,20 +77,16 @@ export const SearchEngineSelector: React.FC<SearchEngineSelectorProps> = ({
     return () => {
       window.removeEventListener('keydown', handleGlobalKeyDown);
     };
-  }, [isSearchBoxVisible, isOpen, highlightedIndex, searchEngines, inputRef]);
-
-  const handleSelect = (engine: typeof selectedEngine) => {
-    setSelectedEngine(engine);
-    setIsOpen(false);
-    setHighlightedIndex(-1);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
+  }, [
+    isSearchBoxVisible,
+    isOpen,
+    highlightedIndex,
+    searchEngines,
+    handleSelect,
+  ]);
 
   return (
     <div className='relative'>
-      {/* 현재 선택된 엔진 표시 */}
       <button
         type='button'
         className='flex items-center bg-transparent text-primary-100 font-bold outline-none cursor-pointer px-3 hover:opacity-50'
@@ -85,9 +94,9 @@ export const SearchEngineSelector: React.FC<SearchEngineSelectorProps> = ({
       >
         <selectedEngine.icon className='w-4 h-4 rounded-sm' />
       </button>
-
-      {/* 드롭다운 */}
       <div
+        role='listbox'
+        aria-expanded={isOpen}
         className={`absolute top-10 left-0 bg-primary-700/90 rounded-lg shadow-lg shadow-primary-800/40 z-50 overflow-hidden transition-all duration-500 ease-in-out ${
           isOpen
             ? 'max-h-40 opacity-100 pointer-events-auto visible'
