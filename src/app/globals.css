@@ -22,7 +22,7 @@ body {
 
 @layer components {
   .flex-center {
-    @apply flex flex-col items-center justify-center;
+    @apply flex items-center justify-center;
   }
   .backDrop {
     @apply fixed w-full h-full z-50 bg-primary-200/30 backdrop-blur-md flex items-center justify-center transition duration-500 ease-in-out;

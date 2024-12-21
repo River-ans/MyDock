@@ -15,7 +15,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
 }) => {
   return (
     <div
-      className={`backDrop
+      className={`backDrop 
         ${
           isVisible
             ? 'opacity-100 pointer-events-auto'
