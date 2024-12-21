@@ -37,7 +37,7 @@ export function SearchInput() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`w-96 h-12 flex items-center bg-primary-800/70 rounded-xl
+      className={`w-96 h-12 flex items-center bg-primary-800/70 rounded-2xl
       border border-primary-200/50 shadow-xl shadow-primary-800/40
       fixed top-[15%] transition-all duration-500 ease-in-out
       ${

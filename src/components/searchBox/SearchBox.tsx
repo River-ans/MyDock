@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { Backdrop } from '../BackDrop';
+import { Backdrop } from '../shared/BackDrop';
 import { SearchInput } from './SearchInput';
 import { useSearchBoxStore } from '@/stores/useSearchBoxStore';
 
