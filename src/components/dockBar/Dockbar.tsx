@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import AppPlus from '@/assets/icons/appPlus.svg';
 import Xmark from '@/assets/icons/x-mark.svg';
 import { Tooltip } from '../shared/Tooltip';
+import Image from 'next/image';
 
 interface Favorite {
   name: string; // 사이트 이름
@@ -28,14 +29,14 @@ export function DockBar() {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   };
 
-  // 즐겨찾기 추가
   const handleAddFavorite = () => {
-    const url = prompt('추가할 사이트 URL을 입력하세요:');
-    if (!url) return;
+    const urlInput = prompt('추가할 사이트 URL을 입력하세요:');
+    if (!urlInput) return;
 
     try {
-      const parsedUrl = new URL(url);
-      const name = prompt('사이트 이름을 입력하세요:') || parsedUrl.hostname;
+      const normalizedUrl = normalizeUrl(urlInput); // URL 정규화
+      const parsedUrl = new URL(normalizedUrl);
+      const name = prompt('사이트 이름을 입력하세요:') || parsedUrl.hostname; // 사용자 입력 또는 기본값
       const favicon = `https://www.google.com/s2/favicons?sz=64&domain=${parsedUrl.hostname}`;
 
       const newFavorite = { name, url: parsedUrl.href, favicon };
@@ -48,6 +49,14 @@ export function DockBar() {
     }
   };
 
+  // URL 정규화 함수
+  const normalizeUrl = (url: string) => {
+    try {
+      return new URL(url).href;
+    } catch {
+      return new URL(`https://${url}`).href;
+    }
+  };
   // 즐겨찾기 삭제
   const handleDeleteFavorite = (index: number) => {
     const updatedFavorites = favorites.filter((_, i) => i !== index);
@@ -107,7 +116,13 @@ export function DockBar() {
                 className='flex flex-col items-center justify-center bg-primary-300 rounded-xl transition-all duration-300 p-1'
                 style={{ width, height }}
               >
-                <img src={favicon} alt={name} className='rounded-lg' />
+                <Image
+                  width={40}
+                  height={40}
+                  src={favicon}
+                  alt={name}
+                  className='rounded-lg'
+                />
               </a>
               {/* 툴팁 표시 */}
               <Tooltip text={name} isVisible={isHovered} />
