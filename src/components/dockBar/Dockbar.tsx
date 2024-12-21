@@ -99,7 +99,7 @@ export function DockBar() {
                 className='flex items-center justify-center bg-primary-300 rounded-xl transition-all duration-300 p-2'
                 style={{ width, height }}
               >
-                <AppPlus className='text-primary-700' />
+                <AppPlus className='text-primary-700 w-full h-full' />
               </button>
             </div>
           );
