@@ -49,7 +49,12 @@ export default function BackGround() {
       </div>
       <div className='flex gap-2'>
         {/* ❗ 프리뷰 영역에서 Zustand의 bgUrl 사용 */}
-        <div className='h-16 w-32 bg-primary-700 border-2 border-primary-400/80 rounded-md overflow-hidden flex items-center justify-center'>
+        <div
+          className='h-16 w-32 bg-primary-700 border-2 border-primary-400/80 
+        outline border-primary-600/90 
+        rounded-md 
+        overflow-hidden flex items-center justify-center'
+        >
           {bgUrl ? (
             <img
               src={bgUrl}
@@ -71,7 +76,8 @@ export default function BackGround() {
             <button
               type='button'
               onClick={handleUploadClick}
-              className='flex-1 flex-center gap-1 p-1 border border-primary-600 shadow-md bg-primary-500 rounded-md'
+              className='flex-1 flex-center gap-1 p-1 border border-primary-600 shadow-md 
+              bg-primary-500 rounded-md active:bg-primary-400 transition-all duration-200 ease-in-out'
             >
               사진 추가
               <Down className='w-3 h-3' />
