@@ -4,6 +4,7 @@ import './globals.css';
 import { SearchBox } from '@/components/searchBox/SearchBox';
 import { DockBar } from '@/components/dockBar/Dockbar';
 import { SearchButton } from '@/components/shared/SearchButton';
+import { BackgroundContainer } from '@/components/shared/BackgroundContainer';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,7 +34,8 @@ export default function RootLayout({
       >
         <SearchButton />
         <SearchBox />
-        {children}
+        <BackgroundContainer> {children}</BackgroundContainer>
+
         <DockBar />
       </body>
     </html>
