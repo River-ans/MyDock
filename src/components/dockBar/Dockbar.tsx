@@ -1,15 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
-import AppPlus from '@/assets/icons/appPlus.svg';
-import Xmark from '@/assets/icons/x-mark.svg';
-import { Tooltip } from '../shared/Tooltip';
+import { AddButton } from './AddButton';
+import { DockItem } from './DockItem';
+import type { Favorite } from '@/types';
 import NextImage from 'next/image';
-
-interface Favorite {
-  name: string; // 사이트 이름
-  url: string; // 즐겨찾기 URL
-  favicon: string; // 파비콘 URL
-}
 
 export function DockBar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -40,19 +34,18 @@ export function DockBar() {
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
   };
 
-  // URL 정규화
-  const normalizeUrl = (url: string) => {
-    try {
-      return new URL(url).href;
-    } catch {
-      return new URL(`https://${url}`).href;
-    }
-  };
-
   // 즐겨찾기 추가
   const handleAddFavorite = () => {
     const urlInput = prompt('추가할 사이트 URL을 입력하세요:');
     if (!urlInput) return;
+
+    const normalizeUrl = (url: string) => {
+      try {
+        return new URL(url).href;
+      } catch {
+        return new URL(`https://${url}`).href;
+      }
+    };
 
     try {
       const normalizedUrl = normalizeUrl(urlInput);
@@ -76,7 +69,7 @@ export function DockBar() {
     saveFavoritesToLocalStorage(updatedFavorites);
   };
 
-  // 우클릭 (삭제 버튼 토글)
+  // 우클릭 (삭제 버튼 표시 토글)
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowDeleteButtons(!showDeleteButtons);
@@ -111,7 +104,6 @@ export function DockBar() {
     if (index === 0) return; // '추가' 버튼
     if (draggingIndex === null) return;
 
-    // 실제 favorites 배열 인덱스
     const actualIndex = index - 1;
     setDragOverIndex(actualIndex);
   };
@@ -119,7 +111,6 @@ export function DockBar() {
   // 드래그 중 항목 위에 있을 때
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    // 마우스 위치 추적
     setDragPos({ x: e.clientX, y: e.clientY });
   };
 
@@ -166,138 +157,41 @@ export function DockBar() {
         onContextMenu={handleContextMenu}
       >
         {[
+          // 첫번째 요소: AddButton (가짜 데이터)
           { name: '추가', url: '#', favicon: '', isAddButton: true },
+          // 실제 즐겨찾기 목록
           ...favorites.map((fav) => ({ ...fav, isAddButton: false })),
         ].map((button, index) => {
-          const { url, favicon, name } = button;
-          const isHovered = hoveredIndex === index;
-          const isAdjacent =
-            hoveredIndex !== null &&
-            (index === hoveredIndex - 1 || index === hoveredIndex + 1);
-
-          const width = isHovered ? '46px' : isAdjacent ? '43px' : '40px';
-          const height = isHovered ? '46px' : isAdjacent ? '43px' : '40px';
-
-          const isCurrentlyDragging =
-            draggingIndex !== null && index - 1 === draggingIndex;
-          const isDragOverThis =
-            dragOverIndex !== null && dragOverIndex === index - 1;
-
           if (button.isAddButton) {
-            // '추가' 버튼
             return (
-              <div
+              <AddButton
                 key={index}
-                className='p-1 relative transition-all duration-300'
-              >
-                <button
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onClick={handleAddFavorite}
-                  className='flex items-center justify-center bg-primary-300 rounded-xl 
-                             transition-all duration-300 p-2'
-                  style={{ width, height }}
-                  draggable={false}
-                >
-                  <AppPlus className='text-primary-700 w-full h-full' />
-                </button>
-              </div>
+                index={index}
+                hoveredIndex={hoveredIndex}
+                onHoverChange={setHoveredIndex}
+                onAddFavorite={handleAddFavorite}
+              />
             );
           } else {
-            const actualIndex = index - 1;
-
-            // **여기서 '첫 번째 아이템이면 왼쪽, 나머지는 기본 오른쪽'** + **인덱스 비교 로직**
-            // 1) actualIndex === 0 => 항상 왼쪽
-            // 2) draggingIndex > actualIndex => "더 뒤의 요소를 앞으로 가져온다" => 왼쪽
-            // 3) 나머지 => 오른쪽
-            let barPositionClass = '';
-            if (isDragOverThis) {
-              if (actualIndex === 0) {
-                // 첫 번째 아이템
-                barPositionClass = 'left-[-2px]';
-              } else if (
-                draggingIndex !== null &&
-                draggingIndex > actualIndex
-              ) {
-                // 인덱스가 더 큰 아이템(뒤쪽에 있던 것)을 앞으로 옮기는 상황
-                barPositionClass = 'left-[-2px]';
-              } else {
-                barPositionClass = 'right-[-2px]';
-              }
-            }
-
+            // DockItem 렌더링
             return (
-              <div
+              <DockItem
                 key={index}
-                className='p-1 relative transition-all duration-300'
-                style={{
-                  width: 'fit-content',
-                  // 드래그 중인 아이템은 원래 자리에서 숨김
-                  opacity: isCurrentlyDragging ? 0 : 1,
-                }}
-                draggable={true}
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragEnter={(e) => handleDragEnter(e, index)}
+                index={index}
+                hoveredIndex={hoveredIndex}
+                onHoverChange={setHoveredIndex}
+                button={button}
+                showDeleteButtons={showDeleteButtons}
+                onDelete={handleDeleteFavorite}
+                // 드래그 관련 props
+                draggingIndex={draggingIndex}
+                dragOverIndex={dragOverIndex}
+                onDragStart={handleDragStart}
+                onDragEnter={handleDragEnter}
                 onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
+                onDrop={handleDrop}
                 onDragEnd={handleDragEnd}
-              >
-                {/* 드래그 오버 표시 바 */}
-                {isDragOverThis && (
-                  <div
-                    className={`
-                      absolute
-                      top-1/2
-                      -translate-y-1/2
-                      w-[3px]
-                      h-[30px]
-                      bg-gradient-to-b
-                      from-primary-100
-                      to-primary-200
-                      rounded-xl
-                      shadow-md
-                      animate-pulse
-                      transition-transform
-                      duration-200
-                      ease-out
-                      scale-110
-                      ${barPositionClass}
-                    `}
-                  />
-                )}
-
-                <a
-                  href={url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  className='flex flex-col items-center justify-center bg-primary-300 rounded-xl
-                             transition-all duration-300 p-1'
-                  style={{ width, height }}
-                >
-                  <NextImage
-                    src={favicon}
-                    alt={name}
-                    width={40}
-                    height={40}
-                    className='rounded-lg select-none pointer-events-none'
-                    draggable={false}
-                    onDragStart={(e) => e.preventDefault()}
-                  />
-                </a>
-                <Tooltip text={name} isVisible={isHovered} />
-                {showDeleteButtons && (
-                  <button
-                    onClick={() => handleDeleteFavorite(actualIndex)}
-                    className='absolute top-[-1px] left-[-1px] bg-primary-200 text-primary-500 
-                               text-xs rounded-full shadow-md z-50 w-4 h-4 flex items-center 
-                               justify-center'
-                  >
-                    <Xmark className='w-3 h-3' />
-                  </button>
-                )}
-              </div>
+              />
             );
           }
         })}
@@ -325,7 +219,6 @@ export function DockBar() {
               height={40}
               className='rounded-lg select-none pointer-events-none'
               draggable={false}
-              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         </div>
