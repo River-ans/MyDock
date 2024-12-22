@@ -23,7 +23,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={`absolute z-50 px-2 py-1 bg-primary-900/70 text-white text-xs rounded-md shadow-md transition-opacity duration-200 opacity-100 ${positionClasses[position]}`}
+      className={`absolute z-50 px-2 py-1 bg-primary-900/70 text-white text-xs rounded-md shadow-md transition-opacity duration-200 opacity-100 ${positionClasses[position]}
+      whitespace-nowrap
+      `}
     >
       {text}
     </div>
