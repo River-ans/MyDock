@@ -52,5 +52,5 @@
 ```bash
 git clone https://github.com/username/mydock.git
 cd mydock
-npm install
+bun install
 ```
