@@ -8,7 +8,7 @@ export default function Home() {
      py-1 px-2 rounded-lg text-sm text-primary-200 border-2 backdrop-blur-xl
      border-primary-300 shadow-xl transition-all duration-500 ease-in-out'
     >
-      <Link href={'/setting/background'}>배경이미지 변경</Link>
+      HOME
     </div>
   );
 }

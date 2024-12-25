@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { db } from '@/lib/db';
 import { useBgStore } from '@/stores/useBgStore';
+import { useContextMenuStore } from '@/stores/useContextMenu';
 
 export function BackgroundContainer({
   children,
@@ -10,6 +11,7 @@ export function BackgroundContainer({
 }) {
   // Zustand에서 bgUrl, fileName, setter 가져오기
   const { bgUrl, setBgUrl, setFileName } = useBgStore();
+  const { openMenu, closeMenu } = useContextMenuStore();
 
   useEffect(() => {
     (async () => {
@@ -23,6 +25,18 @@ export function BackgroundContainer({
     })();
   }, [setBgUrl, setFileName]);
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // x, y 좌표
+    const { clientX, clientY } = e;
+    openMenu(clientX, clientY);
+  };
+
+  // 예: 컨테이너 영역을 좌클릭하면 메뉴 닫기
+  const handleClick = () => {
+    closeMenu();
+  };
+
   return (
     <div
       className='w-full h-full flex flex-col items-center justify-center transition-colors'
@@ -32,6 +46,8 @@ export function BackgroundContainer({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
+      onContextMenu={handleContextMenu}
+      onClick={handleClick}
     >
       {children}
     </div>
