@@ -75,7 +75,7 @@ export function BackGroundSetting() {
             )}
           </div>
 
-          <div className='w-full text-sm flex flex-col gap-1'>
+          <div className='w-full text-sm flex flex-col gap-1 overflow-hidden'>
             {/* ❗ 파일명 표시에도 Zustand의 fileName 사용 */}
             <div className='p-1 border border-primary-200/20 rounded-md w-full whitespace-nowrap overflow-hidden text-ellipsis'>
               {fileName || '이미지 파일명'}

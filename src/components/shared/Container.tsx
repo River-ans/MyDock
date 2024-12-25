@@ -6,24 +6,23 @@ interface ContainerProps {
 }
 
 export function Container({ children }: ContainerProps) {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const [rel, setRel] = useState({ x: 0, y: 0 });
-
-  // 1) 마운트 시점에 브라우저 창 크기를 읽어 컨테이너를 중앙 배치
-  useEffect(() => {
+  const [pos, setPos] = useState(() => {
     if (typeof window !== 'undefined') {
       const containerWidth = 300;
       const containerHeight = 100;
 
+      // 브라우저 창 크기를 기준으로 초기 위치 계산
       const centerX = (window.innerWidth - containerWidth) / 2;
       const centerY = (window.innerHeight - containerHeight) / 2;
 
-      setPos({ x: centerX, y: centerY });
+      return { x: centerX, y: centerY };
     }
-  }, []);
+    return { x: 0, y: 0 }; // 서버사이드 렌더링 대비
+  });
 
-  // 2) 드래그 중과 드래그 종료를 window에서 처리
+  const [dragging, setDragging] = useState(false);
+  const [rel, setRel] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!dragging) return;
@@ -41,14 +40,12 @@ export function Container({ children }: ContainerProps) {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dragging, rel]);
 
-  // 3) 드래그 시작
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.button !== 0) return;
 
