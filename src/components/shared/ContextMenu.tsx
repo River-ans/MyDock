@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { useContextMenuStore } from '@/stores/useContextMenu';
-import { Container } from './Container';
 import { useBgSettingStore } from '@/stores/useBgSettingStore';
 
 export function ContextMenu() {
