@@ -23,11 +23,14 @@ export function DockBar() {
 
   // 미리 빈 이미지 만들어두기
   const transparentDragImage = useMemo(() => {
-    const img = new Image();
-    img.src =
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAA' +
-      'AAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
-    return img;
+    if (typeof window !== 'undefined') {
+      const img = new Image();
+      img.src =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAA' +
+        'AAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+      return img;
+    }
+    return null;
   }, []);
 
   // 로컬스토리지 로드
@@ -90,7 +93,9 @@ export function DockBar() {
     index: number
   ) => {
     // 기본 고스트 제거
-    e.dataTransfer.setDragImage(transparentDragImage, 0, 0);
+    if (transparentDragImage) {
+      e.dataTransfer.setDragImage(transparentDragImage, 0, 0);
+    }
     // index가 0 → '추가' 버튼 → 드래그 불가
     if (index === 0) {
       e.preventDefault();
