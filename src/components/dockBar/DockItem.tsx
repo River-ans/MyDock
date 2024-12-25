@@ -105,10 +105,8 @@ export function DockItem({
         />
       )}
 
-      <a
-        href={url}
-        target='_blank'
-        rel='noopener noreferrer'
+      <button
+        onClick={() => window.open(url, '_blank')}
         onMouseEnter={() => onHoverChange(index)}
         onMouseLeave={() => onHoverChange(null)}
         className='flex flex-col items-center justify-center bg-primary-300 rounded-xl transition-all duration-300 p-1'
@@ -122,7 +120,7 @@ export function DockItem({
           className='rounded-lg select-none pointer-events-none'
           draggable={false}
         />
-      </a>
+      </button>
 
       <Tooltip text={name} isVisible={isHovered} />
 

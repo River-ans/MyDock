@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AddButton } from './AddButton';
 import { DockItem } from './DockItem';
 import type { Favorite } from '@/types';
@@ -20,6 +20,15 @@ export function DockBar() {
     x: 0,
     y: 0,
   });
+
+  // 미리 빈 이미지 만들어두기
+  const transparentDragImage = useMemo(() => {
+    const img = new Image();
+    img.src =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAA' +
+      'AAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
+    return img;
+  }, []);
 
   // 로컬스토리지 로드
   useEffect(() => {
@@ -80,6 +89,8 @@ export function DockBar() {
     e: React.DragEvent<HTMLDivElement>,
     index: number
   ) => {
+    // 기본 고스트 제거
+    e.dataTransfer.setDragImage(transparentDragImage, 0, 0);
     // index가 0 → '추가' 버튼 → 드래그 불가
     if (index === 0) {
       e.preventDefault();
@@ -88,11 +99,6 @@ export function DockBar() {
     const actualIndex = index - 1;
     setDraggingIndex(actualIndex);
     setDraggingItem(favorites[actualIndex]);
-
-    // 기본 고스트 제거
-    const img = new Image();
-    img.src = '';
-    e.dataTransfer.setDragImage(img, 0, 0);
   };
 
   // 드래그가 항목 위로 올라왔을 때
