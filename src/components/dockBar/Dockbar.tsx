@@ -220,14 +220,14 @@ export function DockBar() {
           }}
         >
           <div
-            className='bg-primary-300 rounded-xl p-2 shadow-lg flex flex-col items-center justify-center'
+            className='bg-primary-300 rounded-xl p-1 shadow-lg flex flex-col items-center justify-center'
             style={{ width: '45px', height: '45px' }}
           >
             <NextImage
               src={draggingItem.favicon}
               alt={draggingItem.name}
-              width={40}
-              height={40}
+              width={45}
+              height={45}
               className='rounded-lg select-none pointer-events-none'
               draggable={false}
             />
